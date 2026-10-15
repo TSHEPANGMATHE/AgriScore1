@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>AgriScore | Demo sign in</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;700;800&display=swap');
+:root{--forest:#153D2E;--green:#2F7D4A;--fresh:#78B66A;--cream:#F7F6EF;--white:#fff;--ink:#1D2922;--muted:#758278;--gold:#D9A441;--line:#E3E6DA;--amber:#C98A1B;--red:#B4493F;--out:#2F7D4A;--out-soft:#E6F2E4;--r:14px;--sp:24px;--shadow:0 1px 2px rgba(21,61,46,.06),0 6px 18px rgba(21,61,46,.05)}
+body[data-outcome=limited]{--out:#C98A1B;--out-soft:#FBF1DA}body[data-outcome=notelig]{--out:#B4493F;--out-soft:#F8E6E3}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font:15px/1.5 'DM Sans',Arial,sans-serif}a{color:inherit;text-decoration:none}button,input,select{font:inherit}button{cursor:pointer}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+h1,h2,h3,h4{font-family:Manrope,sans-serif;margin-top:0;color:var(--forest)}h1{font-size:clamp(26px,3vw,34px);letter-spacing:-.03em;margin-bottom:6px}h2{font-size:21px}h3{font-size:16px;margin-bottom:10px}
+.muted{color:var(--muted)}.small{font-size:12px}.hidden{display:none!important}
+.brand{display:flex;align-items:center;gap:10px;font:800 22px Manrope,sans-serif;color:#fff}.brand svg{width:34px;height:34px}
+.topbar{background:var(--forest);display:flex;align-items:center;justify-content:space-between;gap:20px;padding:12px clamp(18px,4vw,56px);position:sticky;top:0;z-index:10}
+.topbar-right{display:flex;align-items:center;gap:14px;color:#fff}.demo-pill{background:rgba(217,164,65,.18);color:var(--gold);font-weight:700;font-size:11px;padding:6px 10px;border-radius:20px;border:1px solid rgba(217,164,65,.5)}
+.user-chip{display:flex;align-items:center;gap:9px;font-weight:600;font-size:14px}.avatar{width:34px;height:34px;border-radius:50%;background:var(--fresh);color:var(--forest);display:grid;place-items:center;font-weight:800;font-size:13px}
+.topbar .btn-outline{background:transparent;color:#fff;border-color:rgba(255,255,255,.35);padding:8px 14px}
+.nav-strip{background:#fff;border-bottom:1px solid var(--line);padding:0 clamp(18px,4vw,56px);display:flex;gap:4px;overflow-x:auto}
+.nav-link{white-space:nowrap;padding:14px 12px;color:var(--muted);font-size:13px;font-weight:600;border-bottom:3px solid transparent}.nav-link:hover{color:var(--forest)}.nav-link.active{color:var(--forest);border-color:var(--green);font-weight:700}
+.main{max-width:1280px;margin:0 auto;padding:32px clamp(16px,4vw,56px) 56px}
+.eyebrow{color:var(--green);font-weight:700;font-size:12px;margin-bottom:6px}
+.page-intro{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:24px}.page-intro p{margin:0;color:var(--muted);max-width:70ch}
+.panel,.metric,.score-panel,.factor-card,.profile-card{background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.panel{padding:var(--sp);margin-bottom:22px}
+.score-layout{display:grid;grid-template-columns:minmax(300px,1fr) 1.4fr;gap:22px;margin-bottom:22px}
+.score-panel{padding:28px;display:flex;align-items:center;gap:26px;border-top:5px solid var(--out);margin-bottom:22px}.score-layout .score-panel{margin-bottom:0}
+.score-ring{width:170px;height:170px;flex:0 0 170px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--out) var(--score-deg,80%),#E8ECE2 0);position:relative}
+.score-ring:before{content:'';position:absolute;inset:12px;border-radius:50%;background:#fff}.score-ring-inner{position:relative;text-align:center}
+.score-number{font:800 44px Manrope,sans-serif;color:var(--forest);letter-spacing:-.05em;line-height:1}.score-outof,.score-caption{font-size:12px;color:var(--muted)}
+.status{display:inline-flex;align-items:center;gap:8px;background:var(--out-soft);color:var(--ink);border:1px solid var(--out);border-radius:8px;padding:8px 12px;font-size:13px;font-weight:700;margin:8px 0}.status-dot{width:9px;height:9px;background:var(--out);border-radius:50%}
+.score-summary h2{margin-bottom:4px;color:var(--out)}.score-summary p{font-size:13px;color:var(--muted);margin:4px 0}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:22px}.score-layout .metrics{grid-template-columns:repeat(3,1fr);margin:0;align-content:stretch}
+.metric{padding:18px}.metric-label{font-size:12px;color:var(--muted);font-weight:600}.metric-value{font:800 24px Manrope,sans-serif;color:var(--forest);margin:8px 0 4px}.metric-note{font-size:12px;color:var(--muted)}
+.section-heading{display:flex;align-items:end;justify-content:space-between;gap:16px;margin:30px 0 14px}.section-heading h2{margin:0}
+.factor-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:8px}
+.factor-card{padding:18px;display:block;transition:border-color .15s,transform .15s}.factor-card:hover{border-color:var(--green);transform:translateY(-2px)}
+.factor-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.factor-icon{width:42px;height:42px;display:grid;place-items:center;border-radius:11px;background:#E6F2E4;color:var(--green)}.factor-icon svg,.step svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.arrow{color:var(--green)}.factor-card p{font-size:12px;color:var(--muted);margin:4px 0 10px}.points{font-size:12px;font-weight:700;color:var(--green)}
+.progress{height:8px;background:#E8ECE2;border-radius:10px;overflow:hidden;margin-top:10px}.progress span{display:block;height:100%;background:var(--green);border-radius:10px}.progress.out span{background:var(--gold)}
+.bar-row{display:grid;grid-template-columns:70px 1fr auto;gap:12px;align-items:center;margin:14px 0;font-size:13px}.bar-row .progress{margin:0}
+.stack{display:flex;height:14px;border-radius:10px;overflow:hidden;background:#E8ECE2;margin:16px 0 10px}.s-ok{background:var(--green)}.s-late{background:var(--gold)}.s-out{background:var(--red)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:10px;padding:11px 16px;font-weight:700;font-size:13px;transition:background .15s}
+.btn-primary{background:var(--green);color:#fff}.btn-primary:hover{background:var(--forest)}.btn-green{background:var(--green);color:#fff}.btn-light{background:#E6F2E4;color:var(--forest)}.btn-light:hover{background:#d5e9d2}.btn-outline{background:#fff;border:1px solid var(--line);color:var(--ink)}
+.panel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;white-space:nowrap;font-size:13px}th{text-align:left;background:#F1F3EA;color:var(--forest);font-size:12px;font-weight:700;padding:12px 14px;border-bottom:1px solid var(--line)}td{padding:13px 14px;border-bottom:1px solid #EEF0E8}tbody tr:nth-child(even){background:#FAFAF5}tbody tr:hover{background:#F1F6EC}
+.tag{display:inline-block;border-radius:20px;padding:4px 10px;font-size:12px;font-weight:700;background:#E6F2E4;color:var(--forest)}.tag.late,.tag.outstanding{background:#F8E6E3;color:var(--red)}.tag.limited{background:#FBF1DA;color:#8A5E0E}
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}.field{background:#fff;border:1px solid #D5DACB;border-radius:9px;padding:10px 12px;min-width:150px;color:var(--ink)}.field:focus{border-color:var(--green)}
+.empty{padding:32px;text-align:center;color:var(--muted)}.two-col{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.factor-row{margin:18px 0}.factor-row-head{display:flex;justify-content:space-between;gap:10px;font-size:13px;font-weight:600;margin-bottom:6px}
+.note{padding:14px 16px;border-radius:10px;background:#FBF3DF;border-left:4px solid var(--gold);color:#5E4A16;font-size:13px}
+.panel ul{padding-left:20px;line-height:1.9}
+.profile-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.profile-card{padding:20px;border-top:5px solid var(--out)}.profile-card[data-out=limited]{border-top-color:var(--amber)}.profile-card[data-out=notelig]{border-top-color:var(--red)}.profile-card[data-out=strong]{border-top-color:var(--green)}.profile-card h3{margin-bottom:2px}.profile-card p{font-size:13px;color:var(--muted)}.profile-card h2{margin:12px 0 0}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}.step{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:18px}.step b{display:flex;width:32px;height:32px;border-radius:50%;background:var(--forest);color:#fff;align-items:center;justify-content:center;margin-bottom:10px;font-family:Manrope}.step p{font-size:13px;color:var(--muted);margin:0}
+.footer{font-size:12px;color:var(--muted);padding:20px;text-align:center}
+.login-page{min-height:100vh;display:grid;grid-template-columns:1.15fr .85fr}
+.login-hero{background:linear-gradient(180deg,var(--forest) 0%,#1F5A3E 70%);color:#fff;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(28px,5vw,64px);position:relative;overflow:hidden}
+.login-hero>*{position:relative;z-index:1}.login-hero svg.hero-art{position:absolute;left:0;bottom:0;width:100%;height:40%;z-index:0;pointer-events:none}
+.login-hero h1{color:#fff;font-size:clamp(34px,4.4vw,54px);line-height:1.08;max-width:15ch;margin:40px 0 16px}.login-hero p{color:#D6E6DA;max-width:50ch}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:28px 0}.feature{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:14px;font-size:13px}.feature b{display:block;margin-bottom:4px}.feature span{color:#CFE0D3}
+.login-side{display:grid;place-items:center;padding:30px;background:var(--cream)}.login-card{width:min(430px,100%)}.login-card h2{font-size:28px;margin:6px 0}.login-card>p{color:var(--muted)}
+.form-group{margin:16px 0}.form-group label{display:block;font-size:13px;font-weight:700;margin-bottom:6px}.form-group input,.form-group select{width:100%;padding:12px;border:1px solid #D5DACB;border-radius:9px;background:#fff}
+.login-card .btn-primary{width:100%;padding:13px}.error{color:var(--red);font-size:13px;margin-top:10px}
+.demo-logins{margin-top:20px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px;font-size:13px}.demo-logins button{display:flex;justify-content:space-between;width:100%;background:none;border:0;border-top:1px solid var(--line);padding:9px 0;color:var(--ink);text-align:left}.demo-logins button:first-of-type{border-top:0}.demo-logins button:hover{color:var(--green)}
+@media(max-width:1050px){.factor-grid,.steps{grid-template-columns:repeat(2,1fr)}.score-layout{grid-template-columns:1fr}.profile-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:760px){.login-page{grid-template-columns:1fr}.features{grid-template-columns:1fr}.page-intro{flex-direction:column;align-items:start}.score-panel{flex-direction:column;text-align:center}.score-layout .metrics,.two-col,.profile-grid,.factor-grid,.steps{grid-template-columns:1fr}.topbar-right .demo-pill,.user-chip span:last-child{display:none}.login-hero h1{margin-top:28px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+.neg{color:var(--red);font-weight:700}.pos{color:var(--green);font-weight:700}.cat-group{margin-bottom:26px}.cat-head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;padding:10px 14px;background:#E6F2E4;border-radius:10px 10px 0 0;border:1px solid var(--line);border-bottom:0}.cat-head h3{margin:0}.cat-group .table-wrap{border:1px solid var(--line);border-radius:0 0 10px 10px}
+.ladder{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.rung{border:1px solid var(--line);border-top:5px solid var(--green);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:3px;font-size:13px;color:var(--muted)}.rung b{color:var(--ink);font-size:15px}.rung.notelig{border-top-color:var(--red)}.rung.limited{border-top-color:var(--amber)}.rung.here{background:var(--out-soft);border-color:var(--out);border-top-width:5px}.rung em{font-style:normal;font-weight:700;color:var(--ink);margin-top:6px}.whatif-out{background:#F1F3EA;border-radius:12px;padding:20px;text-align:center;align-self:start}input[type=range]{accent-color:var(--green)}@media(max-width:760px){.ladder{grid-template-columns:1fr}}
+.switch{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:8px;padding:7px 8px;font-weight:600;font-size:14px}.switch option{color:#1D2922}
+.timeline{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-start;margin-bottom:12px}.dot{display:flex;flex-direction:column;align-items:center;gap:4px;width:28px}.dot i{width:22px;height:22px;border-radius:50%;background:var(--green)}.dot.late i{background:var(--gold)}.dot.outstanding i{background:var(--red)}.dot small{font-size:10px;color:var(--muted);height:12px}.consent{display:flex;align-items:center;gap:10px;font-weight:700;margin:14px 0}.consent input{width:20px;height:20px;accent-color:var(--green)}.btn[disabled]{opacity:.5;cursor:not-allowed}
+</style></head>
+<body>
+<div class="login-page" id="login-view"><section class="login-hero">
+<svg class="hero-art" viewBox="0 0 800 300" preserveAspectRatio="none" aria-hidden="true"><path d="M0 90Q200 40 400 80T800 60V300H0Z" fill="#2F7D4A" opacity=".55"/><path d="M0 150Q250 100 500 140T800 120V300H0Z" fill="#3E9158" opacity=".6"/><g stroke="#78B66A" stroke-width="3" opacity=".45"><path d="M-50 300L250 170M50 300L330 175M150 300L410 180M250 300L490 185M350 300L570 190M450 300L650 195M550 300L730 200M650 300L810 205"/></g><circle cx="680" cy="50" r="26" fill="#D9A441" opacity=".9"/></svg>
+<div><a class="brand" href="#"><svg viewBox="0 0 36 36" fill="none" aria-hidden="true"><circle cx="18" cy="18" r="16" stroke="#D9A441" stroke-width="2"/><path d="M18 27V15" stroke="#78B66A" stroke-width="2.4" stroke-linecap="round"/><path d="M18 18c-4 0-6-2.500-6-6 4 0 6 2.500 6 6zM18 21c4 0 6-2.500 6-6-4 0-6 2.500-6 6z" fill="#78B66A"/></svg><span>AgriScore</span></a>
+<div class="eyebrow" style="color:var(--fresh);margin-top:40px">Alternative credit scoring for smallholder farmers</div><h1 style="margin-top:8px">Build the financial credibility your farm has earned.</h1>
+<p>AgriScore turns mobile money activity, cooperative repayments and harvest records into a clear picture that South African smallholder farmers can share with lenders.</p>
+<div class="features"><div class="feature"><b>Farming records</b><span>Sales, repayments and harvests in one place.</span></div><div class="feature"><b>Credit readiness</b><span>See your strengths and what to improve.</span></div><div class="feature"><b>Lender insights</b><span>Clear summaries for lender review.</span></div></div></div>
+<div><p class="small" style="margin:0 0 6px"><b>Lucky Sibanyoni</b> · Founder</p><p class="small" style="margin:0 0 10px">5th China–Africa Youth Innovation and Entrepreneurship Competition, Zone 6: Africa, Semi-Final</p><p class="small">Demo assessments only. AgriScore does not guarantee loan approval.</p></div></section>
+<section class="login-side"><form class="login-card" id="login-form"><div class="eyebrow">Farmer access · Demo</div><h2>Welcome back</h2><p>Sign in to see your AgriScore dashboard and your own sample records.</p>
+<div class="form-group"><label for="email">Demo email</label><input id="email" type="email" placeholder="farmer@demo.agr" required></div>
+<div class="form-group"><label for="password">Password</label><input id="password" type="password" placeholder="Enter demo password" required></div>
+<button class="btn btn-primary" type="submit">Sign in to dashboard</button><div id="login-error" class="error" role="alert"></div>
+<div class="demo-logins"><strong>Demo accounts</strong> <span class="muted">(tap to fill)</span>
+<button type="button" data-fill="lerato@demo.agr"><span>Lerato Mokoena</span><span class="tag">Strong</span></button>
+<button type="button" data-fill="thabo@demo.agr"><span>Thabo Nkosi</span><span class="tag limited">Limited</span></button>
+<button type="button" data-fill="nomsa@demo.agr"><span>Nomsa Baloyi</span><span class="tag late">Not Eligible</span></button></div>
+<p class="small muted">Demo only. This static site does not provide secure authentication or store real financial information.</p></form></section></div>
+
+<div class="app-shell hidden" id="app-view"><header class="topbar"><a class="brand" href="#dashboard"><svg viewBox="0 0 36 36" fill="none" aria-hidden="true"><circle cx="18" cy="18" r="16" stroke="#D9A441" stroke-width="2"/><path d="M18 27V15" stroke="#78B66A" stroke-width="2.4" stroke-linecap="round"/><path d="M18 18c-4 0-6-2.500-6-6 4 0 6 2.500 6 6zM18 21c4 0 6-2.500 6-6-4 0-6 2.500-6 6z" fill="#78B66A"/></svg><span>AgriScore</span></a><div class="topbar-right"><span class="demo-pill">DEMO MODE</span><div class="user-chip"><span class="avatar" id="nav-avatar">F</span><span id="nav-name">Farmer</span></div><button class="btn btn-outline" id="logout-btn">Log out</button></div></header>
+<nav class="nav-strip" aria-label="Main"><a class="nav-link" href="#farmer-view" data-nav="farmer-view">Farmer View · Free</a><a class="nav-link" href="#dashboard" data-nav="dashboard">Dashboard</a><a class="nav-link" href="#credit-score" data-nav="credit-score">Credit Score</a><a class="nav-link" href="#loans" data-nav="loans">Loans</a><a class="nav-link" href="#transactions" data-nav="transactions">Mobile Money</a><a class="nav-link" href="#repayments" data-nav="repayments">Co-op Repayments</a><a class="nav-link" href="#harvest" data-nav="harvest">Harvest History</a><a class="nav-link" href="#weather" data-nav="weather">Weather Risk</a><a class="nav-link" href="#profile" data-nav="profile">Profile</a><a class="nav-link" href="#lender" data-nav="lender">Lender demo</a><a class="nav-link" href="#methodology" data-nav="methodology">Scoring guide</a><a class="nav-link" href="#about" data-nav="about">About</a></nav>
+<main class="main" id="app-main"></main>
+<footer class="footer">AgriScore interactive prototype · Fictional sample data · Not a real credit decision or loan approval.<br>Founder: Lucky Sibanyoni · 5th China–Africa Youth Innovation and Entrepreneurship Competition, Zone 6: Africa, Semi-Final</footer></div>
+<script src="data.js"></script><script src="auth.js"></script><script src="app.js"></script>
+</body></html>

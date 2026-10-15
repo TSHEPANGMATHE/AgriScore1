@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sign in — Mathla</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="grain"></div>
+
+<nav>
+  <a href="index.html" class="logo" style="text-decoration:none;color:inherit;">Math<span>la</span></a>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <select id="langSelect" aria-label="Choose language">
+      <option value="en">English</option>
+      <option value="af">Afrikaans</option>
+      <option value="tn">Setswana</option>
+      <option value="nso">Sepedi</option>
+      <option value="zu">isiZulu</option>
+      <option value="ts">Xitsonga</option>
+    </select>
+    <button id="themeToggle" aria-label="Toggle light and dark mode" style="background:none;border:1px solid var(--border2);color:var(--white);width:34px;height:34px;border-radius:100px;cursor:pointer;font-size:14px;">☀️</button>
+  </div>
+</nav>
+
+<div class="auth-page">
+  <div class="auth-card">
+    <h1 id="authHeading" data-i18n="signInBtn">Sign in</h1>
+
+    <div id="authFormWrap">
+      <div class="auth-tabs">
+        <button type="button" class="auth-tab active" data-mode="signin" id="tabSignIn" data-i18n="signInBtn">Sign in</button>
+        <button type="button" class="auth-tab" data-mode="signup" id="tabSignUp" data-i18n="createAccountBtn">Create account</button>
+      </div>
+      <form id="authForm" novalidate>
+        <label class="auth-label" for="authEmail" data-i18n="emailLabel">Email</label>
+        <input class="auth-input" type="email" id="authEmail" autocomplete="email" required>
+        <label class="auth-label" for="authPassword" data-i18n="passwordLabel">Password</label>
+        <input class="auth-input" type="password" id="authPassword" autocomplete="current-password" minlength="6" required>
+        <p class="auth-error" id="authError"></p>
+        <button type="submit" class="next-btn show" id="authSubmit" data-i18n="signInBtn">Sign in</button>
+      </form>
+      <p class="auth-note" data-i18n="authNote">Stored on this device only. This demo login does not create a real account.</p>
+    </div>
+
+    <div id="alreadyIn" style="display:none;">
+      <p class="auth-already" id="alreadyText"></p>
+      <a href="index.html" class="next-btn show" style="display:block;text-align:center;text-decoration:none;" data-i18n="continueBtn">Continue to Mathla</a>
+      <button id="switchAccountBtn" class="auth-signout" style="margin-top:14px;width:100%;" data-i18n="signOutBtn">Sign out</button>
+    </div>
+
+    <p class="auth-back"><a href="index.html" data-i18n="backToHome">← Back to Mathla</a></p>
+  </div>
+</div>
+
+<script src="common.js"></script>
+<script src="signin.js"></script>
+</body>
+</html>
